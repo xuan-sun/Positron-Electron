@@ -1,0 +1,17 @@
+Leave this file unchanged for Xuan's own laptop.
+Since it hasn't used Kevin's script yet to compile.
+
+cmake -DGeant4_DIR=~/home/xuansun/geant4/geant4-10.01.p02-install/lib/Geant4-10.1.2 /home/xuansun/Documents/Caltech/ucna_g4_2.1/UCN/
+
+And on my desktop it is:
+
+cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.1.p02-install/lib/Geant4-10.1.2 /home/xuansun/Documents/ucna_g4Sim_XSun_2.1/ucna_g4_2.1-master/UCN/
+
+
+And on the Comsol computer this is:
+
+cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.02.p01-install/lib/Geant4-10.2.1 /home/xuansun/Documents/ucna_g4_2.1/UCN/
+
+And on Positron05 it is:
+
+cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.3.p01-install/lib64/Geant4-10.3.1 /home/xuansun/ucna_g4_2.1/UCN/

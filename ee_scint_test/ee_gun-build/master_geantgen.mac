@@ -1,0 +1,26 @@
+###### Pre-initialization commands
+# spectrometer decay trap geometry name
+/detector/geometry REPLACEWITHGEOMETRY
+# detector vacuum pressure
+/detector/vacuum 1.e-5 torr
+
+/detector/sourceholderpos 0 0 0 m
+/detector/sourceholder REPLACEWITHUSESOURCEHOLDER		# either place source holder in world or not
+					# this ^^ is very dependent on the file type of /particleGun/inputName
+# choose type of ptcl to fire (options: external, Sn113, Ce139, Bi207)
+/particleGun/ptclType REPLACEWITHPTCLTYPE	# external means we have an external file to read from.
+
+# extra pre-initialization commands here
+/detector/sourcefoilthick 9.5 um
+/detector/rotation 0.037
+/detector/offset -3.98 0.44 0 mm
+
+# Supply the full path to input ptcl file, and names of the output files
+/particleGun/inputName REPLACEWITHINPUTFILE
+/particleGun/outputName REPLACEWITHOUTPUTFILE # Note: these two output names (and paths)
+/event/outputName REPLACEWITHOUTPUTFILE               # need to be identical
+
+###### Run initialization and start
+
+/run/initialize
+/run/beamOn REPLACEWITHNUMBEREVENTS
