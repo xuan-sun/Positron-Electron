@@ -25,7 +25,7 @@ struct SingleSDInfo
 {
   // these initalized variable values are needed or else you'll run into same errors as in TrackerHit
   SingleSDInfo() : name("no name"), energy(0), energyQuenched(0), hitTime(0),
-		   NbOfTracks(0), edepWeightedPos(), edepWeightedPos2(), thetaIn(0), thetaOut(0) {}
+		   NbOfTracks(0), edepWeightedPos(), edepWeightedPos2() {}
 
   G4String name;	// name of SD we're storing info from.
   G4double energy;	// energy deposited in SD
@@ -33,25 +33,12 @@ struct SingleSDInfo
 
   G4double hitTime;	// time it takes to first hit inside the SD
   int NbOfTracks;	// number of tracks produced (primary only I believe)
-//  int hitCount;	// number of hits in a particular SD (haven't been able to implement yet)
 
   G4ThreeVector edepWeightedPos;	// energy weighted by position vector
   G4ThreeVector edepWeightedPos2;	// energy weighted by position vector elements squared
 
-  G4double thetaIn;	// angle (degrees) of electron from normal when entering each SD
-  G4double thetaOut;	// angle (degrees) of electron from normal when exiting
-  G4double keIn;
-  G4double keOut;
-
 };
 
-struct EventInfo
-{
-  bool trapped;         // whether the particle was deemed trapped and killed
-  G4double compTime;    // time it took from beginning of event generation to completion of event propagation
-
-  SingleSDInfo Scint_crystals[1];
-};
 
 EventAction::EventAction()
 : G4UserEventAction(), fStartTime(0)
@@ -130,6 +117,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
       }
     }
   }
+
 }
 
 
@@ -193,9 +181,6 @@ void EventAction::EndOfEventAction(const G4Event* evt)
         if(pIn_x || pIn_y || pIn_z)
         {
           G4double magPIn2 = pIn_x*pIn_x + pIn_y*pIn_y + pIn_z*pIn_z;
-	  // these values only useful/mean what they are supposed to for first track into SD
-          SD_info[i].keIn = sqrt(magPIn2 + kMe*kMe) - kMe;
-          SD_info[i].thetaIn = acos(fabs(pIn_z/sqrt(magPIn2)));
         }
       }
 
@@ -214,38 +199,8 @@ void EventAction::EndOfEventAction(const G4Event* evt)
         if(pOut_x || pOut_y || pOut_z)
         {
           G4double magPOut2 = pOut_x*pOut_x + pOut_y*pOut_y + pOut_z*pOut_z;
-          // Same as above, exit values only useful for last entry.
-          SD_info[i].keOut = sqrt(magPOut2 + kMe*kMe) - kMe;
-          SD_info[i].thetaOut = acos(fabs(pOut_z/sqrt(magPOut2)));
         }
       }
-    }
-  }
-
-  EventInfo event;
-  event.trapped = fTrapped;
-  event.compTime = compTime*s;
-  event.Scint_crystals[0] = SD_info[fScintEast_index];
-
-  for(int t = 0; t < 1; t++)
-  {
-    for(int tt = 0; tt < 3; tt++)
-    {
-	// go in and divide out, entry by entry, the energy component of the position where Edep is.
-	// Inner loop goes over the G4ThreeVector components (via array indexing syntax)
-	// Outer loop goes over the 2 crystals and 2 MWPC regions in a single event.
-      if(event.Scint_crystals[t].energy > 0)
-      {
-	// divide out the energy from the weighted energy, component by component
-        event.Scint_crystals[t].edepWeightedPos[tt] = 
-	event.Scint_crystals[t].edepWeightedPos[tt] / event.Scint_crystals[t].energy;
-
-	// now that the position coordinate is given, divide our sigma by energy and subtract position^2, then sqrt -> units of pos
-	event.Scint_crystals[t].edepWeightedPos2[tt] = sqrt( 
-	event.Scint_crystals[t].edepWeightedPos2[tt] / event.Scint_crystals[t].energy - 
-	event.Scint_crystals[t].edepWeightedPos[tt]*event.Scint_crystals[t].edepWeightedPos[tt] );
-      }
-
     }
   }
 
@@ -254,30 +209,21 @@ void EventAction::EndOfEventAction(const G4Event* evt)
   ofstream outfile;
   outfile.open(sOutputFileName, ios::app);
 
-  outfile << event.trapped << "\t"
-	  << event.compTime/s << "\t";
-
-  for(int j = 0; j < 1; j++)
-  {
-  outfile << event.Scint_crystals[j].name << "\t"
-  	  << event.Scint_crystals[j].energy/keV << "\t"
-  	  << event.Scint_crystals[j].energyQuenched/keV << "\t"
-	  << event.Scint_crystals[j].hitTime/s << "\t"
-	  << event.Scint_crystals[j].NbOfTracks << "\t"
-	  << (event.Scint_crystals[j].edepWeightedPos).x()/m << "\t"
-          << (event.Scint_crystals[j].edepWeightedPos).y()/m << "\t"
-          << (event.Scint_crystals[j].edepWeightedPos).z()/m << "\t"
-	  << (event.Scint_crystals[j].edepWeightedPos2).x()/m << "\t"
-          << (event.Scint_crystals[j].edepWeightedPos2).y()/m << "\t"
-          << (event.Scint_crystals[j].edepWeightedPos2).z()/m << "\t"
-	  << event.Scint_crystals[j].thetaIn/deg << "\t"
-	  << event.Scint_crystals[j].thetaOut/deg << "\t"
-	  << event.Scint_crystals[j].keIn/keV << "\t"
-	  << event.Scint_crystals[j].keOut/keV << "\t";
-  }
+  outfile << SD_info[0].name << "\t"
+  	  << SD_info[0].energy/keV << "\t"
+  	  << SD_info[0].energyQuenched/keV << "\t"
+	  << SD_info[0].hitTime/s << "\t"
+	  << SD_info[0].NbOfTracks << "\t"
+	  << (SD_info[0].edepWeightedPos).x()/m << "\t"
+          << (SD_info[0].edepWeightedPos).y()/m << "\t"
+          << (SD_info[0].edepWeightedPos).z()/m << "\t"
+	  << (SD_info[0].edepWeightedPos2).x()/m << "\t"
+          << (SD_info[0].edepWeightedPos2).y()/m << "\t"
+          << (SD_info[0].edepWeightedPos2).z()/m << "\t";
 
   outfile << "\n";
 
   outfile.close();
+
 }
 

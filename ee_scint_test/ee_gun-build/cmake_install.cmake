@@ -1,4 +1,4 @@
-# Install script for directory: /home/xuansun/Documents/Positron-Electron/ee_scint_test/ee_gun
+# Install script for directory: /home/xuansun/Documents/Analysis_Code/Positron-Electron/ee_scint_test/ee_gun
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,11 +39,13 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/xuansun/Documents/Positron-Electron/ee_scint_test/ee_gun-build/ucn")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/xuansun/Documents/Analysis_Code/Positron-Electron/ee_scint_test/ee_gun-build/ucn")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn")
-    file(RPATH_REMOVE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn")
+    file(RPATH_CHANGE
+         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn"
+         OLD_RPATH "/home/xuansun/geant4/geant4.10.04-install/lib:/home/xuansun/root/root-6.12.04-build/lib:"
+         NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ucn")
     endif()
@@ -58,5 +60,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/xuansun/Documents/Positron-Electron/ee_scint_test/ee_gun-build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/xuansun/Documents/Analysis_Code/Positron-Electron/ee_scint_test/ee_gun-build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

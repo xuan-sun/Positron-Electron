@@ -15,3 +15,8 @@ cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.02.p01-install/lib/Geant4-10.2
 And on Positron05 it is:
 
 cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.3.p01-install/lib64/Geant4-10.3.1 /home/xuansun/ucna_g4_2.1/UCN/
+
+On my local laptop is:
+
+cmake -DGeant4_DIR=/home/xuansun/geant4/geant4.10.4-install/lib64/Geant4-10.4 /home/xuansun/Documents/Analysis_Code/Positron-Electron/ee_scint_test/ee_gun
+

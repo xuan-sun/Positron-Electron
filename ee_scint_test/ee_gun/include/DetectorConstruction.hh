@@ -51,10 +51,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction, G4UImessenger, 
   private:
     TrackerSD* RegisterSD(G4String sdName, G4String hcName);
 
-    TrackerSD* SD_scint_scintillator[2];	// all the SD objects that will be used
-    TrackerSD* SD_scint_deadScint[2];
-    TrackerSD* SD_scint_backing[2];
-    TrackerSD* SD_world;
+    TrackerSD* SD_scint_scintillator[1];	// all the SD objects that will be used
 
     // User Interface commands from .mac files
     G4UIdirectory* uiDetectorDir;       // UI directory for detector-related commands

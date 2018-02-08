@@ -92,7 +92,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4String particleName;
   G4ParticleDefinition* particle;
 
-  fParticleGun -> SetParticleEnergy(321*keV);
+  fParticleGun -> SetParticleEnergy(480*keV);
   particle = particleTable->FindParticle(particleName="e+");
 
   fParticleGun->SetParticleDefinition(particle);
